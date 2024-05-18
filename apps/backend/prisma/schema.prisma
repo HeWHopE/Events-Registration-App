@@ -1,0 +1,38 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id           Int                @id @default(autoincrement())
+  title        String
+  description  String
+  eventDate    DateTime           @map("event_date")
+  organizer    String
+  createdAt    DateTime           @default(now()) @map("created_at")
+  participants ParticipantEvent[]
+}
+
+model Participant {
+  id        Int                @id @default(autoincrement())
+  fullName  String             @map("full_name")
+  email     String             @unique
+  heardFrom String             @map(" heard_from")
+  events    ParticipantEvent[]
+}
+
+model ParticipantEvent {
+  id            Int         @id @default(autoincrement())
+  participant   Participant @relation(fields: [participantId], references: [id])
+  participantId Int         @map("participant_id")
+  event         Event       @relation(fields: [eventId], references: [id])
+  eventId       Int         @map("event_id")
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@unique([participantId, eventId])
+}
