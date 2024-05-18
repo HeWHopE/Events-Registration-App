@@ -1,7 +1,3 @@
-# doctoo
-
-WIP.
-
 ## Installation
 
 1. Install [nvm](https://github.com/nvm-sh/nvm) or [LTS Node.js](https://nodejs.org) directly from official website.
@@ -32,14 +28,7 @@ WIP.
 3. Run `docker compose -f docker-compose.dev.yaml --env-file=.env.dev up -d`.
 4. Done. When running locally, the backend should have a connection to the database.
 
-### Production Mode
-
-1. Create a new file `.env.prod` and paste the contents from the `.env.prod.example` file into it. Fill in all required
-   variables.
-2. Run `docker compose -f docker-compose.prod.yaml --env-file=.env.prod up --build -d --remove-orphans`.
-3. Done. With the `docker ps` command you should see the database, backend, frontend and some additional services.
-
-> To stop **prod** or **dev** containers, you need run `docker compose -f docker-compose.[dev|prod].yaml down`.
+> To stop **dev** container, you need run `docker compose -f docker-compose.[dev].yaml down`.
 
 ## Conventional Commits
 
