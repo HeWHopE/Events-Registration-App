@@ -1,6 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import Header from './pages/header';
 import Events from './pages/events';
+import './output.css';
+import RegisterPage from './pages/register';
+
 function App() {
   return (
     <>
@@ -8,7 +11,7 @@ function App() {
       <Routes>
         <Route path='*' Component={Events} />
         <Route path='/events' Component={Events} />
-        <Route path='/event/:id' element={<div>Event Details Page</div>} />
+        <Route path='/event/:id' Component={RegisterPage} />
       </Routes>
     </>
   );

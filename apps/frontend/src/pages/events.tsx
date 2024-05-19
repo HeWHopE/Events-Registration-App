@@ -14,8 +14,8 @@ const Events: React.FC = () => {
 
   return (
     <div className='p-5'>
-      <h1 className='mb-5 border-2 border-black text-2xl font-bold'>Events</h1>
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
+      <h1 className='mb-5 text-2xl font-bold'>Events</h1>
+      <div className='grid h-36 max-w-[900px] gap-4 md:grid-cols-2 lg:grid-cols-3'>
         {events.data.length > 0 ? (
           events.data.map((event: IEvent) => <Event key={event.id} event={event} />)
         ) : (

@@ -26,7 +26,7 @@ model Participant {
   email     String             @unique
   heardFrom String             @map(" heard_from")
   events    ParticipantEvent[]
-
+  dateOfBirth DateTime         @map("date_of_birth")
   @@map("participants")
 }
 
