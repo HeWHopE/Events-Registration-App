@@ -16,7 +16,14 @@
     "node": true,
     "jest": true
   },
-  "ignorePatterns": [".eslintrc.json", "dist", "node_modules"],
+  "ignorePatterns": [
+    ".eslintrc.json",
+    "dist",
+    "node_modules",
+    "tailwind.config.ts",
+    "tailwind.config.js",
+    "postcss.config.js"
+  ],
 
   "rules": {
     "react/react-in-jsx-scope": "off",

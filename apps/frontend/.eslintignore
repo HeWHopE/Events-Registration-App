@@ -2,5 +2,5 @@ storybook-static
 angular/*
 dist
 node_modules
-postcss.config.js'
+postcss.config.ts
 tailwind.config.ts

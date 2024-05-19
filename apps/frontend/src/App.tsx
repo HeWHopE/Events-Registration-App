@@ -1,17 +1,16 @@
-import './App.css';
-
+import { Route, Routes } from 'react-router-dom';
+import Header from './pages/header';
+import Events from './pages/events';
 function App() {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a className='App-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <Routes>
+        <Route path='*' Component={Events} />
+        <Route path='/events' Component={Events} />
+        <Route path='/event/:id' element={<div>Event Details Page</div>} />
+      </Routes>
+    </>
   );
 }
 

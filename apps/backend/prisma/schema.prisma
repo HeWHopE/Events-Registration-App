@@ -16,6 +16,8 @@ model Event {
   organizer    String
   createdAt    DateTime           @default(now()) @map("created_at")
   participants ParticipantEvent[]
+
+  @@map("events")
 }
 
 model Participant {
@@ -24,6 +26,8 @@ model Participant {
   email     String             @unique
   heardFrom String             @map(" heard_from")
   events    ParticipantEvent[]
+
+  @@map("participants")
 }
 
 model ParticipantEvent {
@@ -35,4 +39,5 @@ model ParticipantEvent {
   createdAt     DateTime    @default(now()) @map("created_at")
 
   @@unique([participantId, eventId])
+  @@map("participants_events")
 }
