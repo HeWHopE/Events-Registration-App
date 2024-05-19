@@ -6,7 +6,6 @@ import EventBox from './components/eventBox';
 import AddEventBox from './components/addEventBox';
 import Popup from '../../components/UI/Popup/Popup';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import axios from 'axios';
 
 type FormValues = {
   organizer: string;
@@ -60,26 +59,10 @@ const Events: React.FC = () => {
     setIsPopupOpen(true);
   };
 
-  const fetchEvents = async () => {
-    try {
-      const response = await axios.get('https://www.eventbriteapi.com/v3/events', {
-        headers: {
-          Authorization: `Bearer DCSWZBLJ2JPPE4L27VND`,
-        },
-      });
-      console.log(response.data);
-      return response.data.events;
-    } catch (error) {
-      console.error('Error fetching events:', error);
-      return [];
-    }
-  };
-
   return (
     <>
       <div className='p-5 flex justify-between mx-28'>
         <h1 className='mb-5 text-xl font-bold'>Events</h1>
-        <button onClick={fetchEvents}>123</button>
         <select id='sort' value={sortOption} onChange={handleSortChange} className='border rounded-md p-2 border-black'>
           <option value='date'>Date</option>
           <option value='title'>Title</option>
