@@ -1,5 +1,5 @@
 import axios from 'axios';
 
-export const API_URL = process.env.BACKEND_URL;
+export const BACKEND_URL = process.env.BACKEND_URL;
 
-export const instance = axios.create({ baseURL: API_URL, withCredentials: true });
+export const instance = axios.create({ baseURL: BACKEND_URL, withCredentials: true });
