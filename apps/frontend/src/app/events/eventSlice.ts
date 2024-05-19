@@ -5,14 +5,16 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 type EventState = {
   data: IEvent[];
+  currentEvent: IEvent | null;
 };
 
 const initialState: EventState = {
   data: [],
+  currentEvent: null,
 };
 
 export const eventSlice = createAppSlice({
-  name: 'event', // Correct slice name
+  name: 'event',
   initialState,
   reducers: {
     setEventData: (state, action: PayloadAction<IEvent[]>) => {
@@ -21,10 +23,13 @@ export const eventSlice = createAppSlice({
     addEvent: (state, action: PayloadAction<IEvent>) => {
       state.data.push(action.payload);
     },
+    setCurrentEvent: (state, action: PayloadAction<IEvent>) => {
+      state.currentEvent = action.payload;
+    },
   },
 });
 
-export const { setEventData, addEvent } = eventSlice.actions;
+export const { setEventData, addEvent, setCurrentEvent } = eventSlice.actions;
 
 export const selectEventData = (state: RootState) => state.event.data;
 

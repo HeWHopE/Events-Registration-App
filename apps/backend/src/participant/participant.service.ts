@@ -18,21 +18,13 @@ export class ParticipantService {
     return true;
   }
 
-  private async isParticipantByEmailExists(email: string): Promise<boolean> {
-    const participant = await this.prismaService.participant.findUnique({
-      where: { email },
+  async findByEventId(eventId: number) {
+    return await this.prismaService.participant.findMany({
+      where: { eventId },
     });
-
-    if (participant)
-      throw new NotFoundException(
-        'A participant with this email already exists.',
-      );
-
-    return true;
   }
 
   async create(body: CreateParticipantDto) {
-    await this.isParticipantByEmailExists(body.email);
     const participant = await this.prismaService.participant.create({
       data: {
         ...body,

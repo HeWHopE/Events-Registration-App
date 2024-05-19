@@ -1,6 +1,10 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
+import { useAppDispatch } from '../../../app/hooks';
+import { createParticipant } from '../../../app/participants/participantThunks';
+import { useEffect, useState } from 'react';
+import Spinner from '../../../components/UI/Spinner/Spinner';
 type FormValues = {
   fullName: string;
   email: string;
@@ -8,17 +12,37 @@ type FormValues = {
   source: string;
 };
 
-const Register: React.FC = () => {
-  const id = useParams<{ id: string }>();
+const RegisterForm: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!id) {
+      navigate('/events');
+    }
+  }, [id, navigate]);
+
+  if (!id) {
+    return null;
+  }
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
 
+  const dispatch = useAppDispatch();
+
   const onSubmit: SubmitHandler<FormValues> = data => {
-    console.log('Form Data:', data);
-    console.log('Event ID:', id);
+    setIsLoading(true);
+    const date = new Date(data.dob);
+    dispatch(createParticipant({ ...data, eventId: +id, dob: date.toISOString() }));
+    setTimeout(() => {
+      setIsLoading(false);
+      navigate('/events');
+    }, 2000);
   };
 
   return (
@@ -32,6 +56,7 @@ const Register: React.FC = () => {
           <input
             type='text'
             id='fullName'
+            maxLength={40}
             {...register('fullName', { required: true })}
             className='mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500'
           />
@@ -104,9 +129,9 @@ const Register: React.FC = () => {
         <div className='flex justify-center'>
           <button
             type='submit'
-            className='w-1/2 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+            className='w-1/2 flex justify-center gap-4 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
           >
-            Register
+            {isLoading && <Spinner color='white' size={20} />} Register
           </button>
         </div>
       </form>
@@ -114,4 +139,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default RegisterForm;

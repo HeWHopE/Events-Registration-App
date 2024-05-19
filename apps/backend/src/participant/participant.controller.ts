@@ -30,6 +30,11 @@ export class ParticipantController {
     return this.participantService.findOne(+id);
   }
 
+  @Get('event/:id')
+  findByEventId(@Param('id') id: string) {
+    return this.participantService.findByEventId(+id);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,

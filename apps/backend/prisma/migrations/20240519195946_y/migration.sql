@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "participants" ADD COLUMN     "registered_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

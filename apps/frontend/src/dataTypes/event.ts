@@ -1,7 +1,8 @@
 export interface IEvent {
-  id: number;
+  id?: number;
   title: string;
   description: string;
-  createdAt: string;
+  createdAt?: string;
+  organizer: string;
   eventDate: string;
 }

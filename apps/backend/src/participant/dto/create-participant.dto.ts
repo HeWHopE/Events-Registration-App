@@ -1,4 +1,4 @@
-import { IsISO8601 } from 'class-validator';
+import { IsISO8601, IsInt, IsNotEmpty } from 'class-validator';
 import { IsNotEmptyString } from '../../validators/IsNotEmptyString';
 
 export class CreateParticipantDto {
@@ -9,9 +9,13 @@ export class CreateParticipantDto {
   email: string;
 
   @IsNotEmptyString()
-  heardFrom: string;
+  source: string;
 
   @IsNotEmptyString()
   @IsISO8601()
-  dateOfBirth: string;
+  dob: string;
+
+  @IsInt()
+  @IsNotEmpty()
+  eventId: number;
 }

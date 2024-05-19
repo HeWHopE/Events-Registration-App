@@ -12,10 +12,10 @@ model Event {
   id           Int                @id @default(autoincrement())
   title        String
   description  String
-  eventDate    DateTime           @map("event_date")
+  eventDate    String           @map("event_date")
   organizer    String
   createdAt    DateTime           @default(now()) @map("created_at")
-  participants ParticipantEvent[]
+  participants Participant[]
 
   @@map("events")
 }
@@ -23,21 +23,11 @@ model Event {
 model Participant {
   id        Int                @id @default(autoincrement())
   fullName  String             @map("full_name")
-  email     String             @unique
-  heardFrom String             @map(" heard_from")
-  events    ParticipantEvent[]
-  dateOfBirth DateTime         @map("date_of_birth")
+  email     String             
+  source String             @map(" heard_from")
+  event    Event?              @relation(fields: [eventId], references: [id])
+  eventId   Int               @map("event_id")
+  dob DateTime         @map("date_of_birth")
+  registeredAt DateTime @default(now()) @map("registered_at")
   @@map("participants")
-}
-
-model ParticipantEvent {
-  id            Int         @id @default(autoincrement())
-  participant   Participant @relation(fields: [participantId], references: [id])
-  participantId Int         @map("participant_id")
-  event         Event       @relation(fields: [eventId], references: [id])
-  eventId       Int         @map("event_id")
-  createdAt     DateTime    @default(now()) @map("created_at")
-
-  @@unique([participantId, eventId])
-  @@map("participants_events")
 }
