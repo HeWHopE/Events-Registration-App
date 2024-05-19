@@ -1,3 +1,7 @@
+## Link 
+
+[Link](https://events-registration-app-1-80tl.onrender.com/)
+
 ## Installation
 
 1. Install [nvm](https://github.com/nvm-sh/nvm) or [LTS Node.js](https://nodejs.org) directly from official website.
@@ -29,7 +33,7 @@
 4. Done. When running locally, the backend should have a connection to the database.
 
 
-> To stop **prod** or **dev** containers, you need run `docker compose -f docker-compose.[dev|prod].yaml down`.
+> To stop **dev** containers, you need run `docker compose -f docker-compose.[dev].yaml down`.
 
 ## Conventional Commits
 
