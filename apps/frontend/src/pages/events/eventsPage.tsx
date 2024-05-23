@@ -6,6 +6,8 @@ import EventBox from './components/eventBox';
 import AddEventBox from './components/addEventBox';
 import Popup from '../../components/UI/Popup/Popup';
 import { useForm, type SubmitHandler } from 'react-hook-form';
+import SortOptions from './components/sortOptions';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 type FormValues = {
   organizer: string;
@@ -19,6 +21,8 @@ const Events: React.FC = () => {
   const events = useAppSelector(state => state.event);
   const [sortOption, setSortOption] = useState<string>('date');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [offset, setOffset] = useState(0);
+  const [isFetching, setIsFetching] = useState(false);
 
   const {
     register,
@@ -28,8 +32,30 @@ const Events: React.FC = () => {
   } = useForm<FormValues>();
 
   useEffect(() => {
-    dispatch(getAllEvents());
+    dispatch(getAllEvents({ limit: 35, offset: 0 }));
+    console.log('Fetching events');
+
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 10 &&
+        !isFetching
+      ) {
+        loadMoreEvents();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const loadMoreEvents = () => {
+    setIsFetching(true);
+    const newOffset = offset + 35;
+    setOffset(newOffset);
+    dispatch(getAllEvents({ limit: 6, offset: newOffset })).finally(() => {
+      setIsFetching(false);
+    });
+  };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOption(e.target.value);
@@ -63,26 +89,24 @@ const Events: React.FC = () => {
     <>
       <div className='p-5 flex justify-between mx-28'>
         <h1 className='mb-5 text-xl font-bold'>Events</h1>
-        <select id='sort' value={sortOption} onChange={handleSortChange} className='border rounded-md p-2 border-black'>
-          <option value='date'>Date</option>
-          <option value='title'>Title</option>
-          <option value='organizer'>Organizer</option>
-        </select>
+        <SortOptions sortOption={sortOption} onSortChange={handleSortChange} />
       </div>
-      <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 mx-28'>
-        {sortedEvents.length > 0 ? (
+      <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 mx-28 mb-20'>
+        {sortedEvents.length > 0 &&
           sortedEvents.map((event: IEvent) => (
             <div key={event.id}>
               <EventBox event={event} />
             </div>
-          ))
-        ) : (
-          <p>No events available</p>
-        )}
+          ))}
         <div onClick={addEventClick}>
           <AddEventBox />
         </div>
       </div>
+      {isFetching && (
+        <div className='flex items-center justify-center'>
+          <Spinner color='blue' size={50} />
+        </div>
+      )}
       <Popup popupIsOpen={isPopupOpen} closePopup={() => setIsPopupOpen(false)} modalFullClassName='w-[600px]'>
         <h1 className='text-xl font-bold mb-4 flex items-center justify-center'>Add Event</h1>
         <form onSubmit={handleSubmit(onSubmit)}>

@@ -3,20 +3,24 @@ import { addEvent, setCurrentEvent, setEventData } from './eventSlice';
 import { instance } from '../../api/axios.api';
 import handleError from '../../api/handleError.api';
 import type { IEvent } from '../../dataTypes/event';
-export const getAllEvents = createAsyncThunk('event', async (_, { dispatch }) => {
-  try {
-    const response = await instance.get('/event');
-    console.log('Full response:', response);
-    const data = response.data;
-    console.log('Data:', data);
 
-    dispatch(setEventData(data));
-  } catch (e) {
-    console.error('Error caught:', e);
-    const error = e as Error;
-    handleError(error);
-  }
-});
+export const getAllEvents = createAsyncThunk(
+  'event',
+  async ({ limit, offset }: { limit: number; offset: number }, { dispatch }) => {
+    try {
+      const response = await instance.get('/event', {
+        params: { limit, offset },
+      });
+      const data = response.data;
+
+      dispatch(setEventData(data));
+    } catch (e) {
+      console.error('Error caught:', e);
+      const error = e as Error;
+      handleError(error);
+    }
+  },
+);
 
 export const getEvent = createAsyncThunk('event', async (id: number, { dispatch }) => {
   try {

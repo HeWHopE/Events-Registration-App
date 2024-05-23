@@ -8,6 +8,7 @@ import {
   Delete,
   UsePipes,
   ValidationPipe,
+  Query,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -24,8 +25,11 @@ export class EventController {
   }
 
   @Get()
-  findAll() {
-    return this.eventService.findAll();
+  findAll(@Query('limit') limit: number, @Query('offset') offset: number) {
+    return this.eventService.findAll({
+      limit: Number(limit),
+      offset: Number(offset),
+    });
   }
 
   @Get(':id')

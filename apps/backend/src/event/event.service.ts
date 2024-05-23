@@ -26,10 +26,18 @@ export class EventService {
       throw error;
     }
   }
+  async findAll(pagination: { limit: number; offset: number }) {
+    const { limit, offset } = pagination;
 
-  async findAll() {
+    // Convert limit and offset to numbers and provide default values if they are not valid
+    const validLimit = isNaN(Number(limit)) ? 35 : Number(limit);
+    const validOffset = isNaN(Number(offset)) ? 0 : Number(offset);
+
     try {
-      return await this.prismaService.event.findMany();
+      return await this.prismaService.event.findMany({
+        take: validLimit,
+        skip: validOffset,
+      });
     } catch (error) {
       console.error('Error finding events:', error);
       throw error;

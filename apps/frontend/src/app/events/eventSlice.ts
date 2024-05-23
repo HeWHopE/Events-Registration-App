@@ -18,7 +18,7 @@ export const eventSlice = createAppSlice({
   initialState,
   reducers: {
     setEventData: (state, action: PayloadAction<IEvent[]>) => {
-      state.data = action.payload;
+      state.data = [...state.data, ...action.payload];
     },
     addEvent: (state, action: PayloadAction<IEvent>) => {
       state.data.push(action.payload);
